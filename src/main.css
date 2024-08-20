@@ -1,0 +1,10 @@
+body{
+    box-sizing: border-box;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-image: url('../sunlight-sky-clouds-Sun-horizon-atmosphere-215879-wallhere.com.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    font-family:'Roboto';
+}
