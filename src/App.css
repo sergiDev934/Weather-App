@@ -52,3 +52,23 @@ img{
     font-weight: bold;
     font-size: 30px;
 }
+.loading{
+    padding: 15px;
+    background: linear-gradient(149deg, #53a0cd, #111f29);
+    border-radius: 50px;
+    animation: rotate 1s forwards infinite linear;
+}
+.loading-inner{
+    width: 15px ;
+    height: 15px;
+    border-radius: 50px;
+    background-color: rgb(131 125 125);
+}
+@keyframes rotate {
+    0%{
+        rotate: 0deg;
+    }
+    100%{
+        rotate: 360deg;
+    }
+}

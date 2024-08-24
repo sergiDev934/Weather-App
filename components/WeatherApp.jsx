@@ -6,13 +6,19 @@ import './WeatherApp.module.css'
 
 export function WeatherApp () {
   const [city, setCity] = useState(null)
-  const [weather, setWeather] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [weather, setWeather] = useState()
 
   const loadingInfo = async (cityPar = 'London') => {
     setLoading(true)
     const request = await fetch(`${import.meta.env.VITE_URL}&key=${import.meta.env.VITE_KEY}&q=${cityPar}`)
     const data = await request.json()
+    setTimeout(() => setLoading(false), 2000)
+    return data
+  }
+  const returnData = async () => {
+    const cityPar = city
+    const data = await loadingInfo(cityPar)
     console.log(data)
   }
   const handleClick = e => {
@@ -21,8 +27,9 @@ export function WeatherApp () {
     setCity(city)
   }
   useEffect(() => {
-    const cityPar = city
-    loadingInfo(cityPar)
+    if (city !== null) {
+      returnData()
+    }
   }, [city])
 
   return (
