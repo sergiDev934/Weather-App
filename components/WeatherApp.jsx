@@ -6,20 +6,17 @@ import './WeatherApp.module.css'
 
 export function WeatherApp () {
   const [city, setCity] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [weather, setWeather] = useState()
+  const [weather, setWeather] = useState(false)
 
   const loadingInfo = async (cityPar = 'London') => {
-    setLoading(true)
     const request = await fetch(`${import.meta.env.VITE_URL}&key=${import.meta.env.VITE_KEY}&q=${cityPar}`)
-    const data = await request.json()
-    setTimeout(() => setLoading(false), 2000)
-    return data
-  }
-  const returnData = async () => {
-    const cityPar = city
-    const data = await loadingInfo(cityPar)
-    console.log(data)
+    if (request.ok) {
+      const data = await request.json()
+      setWeather('loading')
+      setTimeout(() => {
+        setWeather(data)
+      }, 2000)
+    } else console.log("The name isn't correct")
   }
   const handleClick = e => {
     e.preventDefault()
@@ -28,7 +25,8 @@ export function WeatherApp () {
   }
   useEffect(() => {
     if (city !== null) {
-      returnData()
+      const cityPar = city
+      loadingInfo(cityPar)
     }
   }, [city])
 
@@ -37,8 +35,21 @@ export function WeatherApp () {
       <WeatherForm
         onSubmit={handleClick}
       />
-      {loading ? <LoadingScreen /> : <WeatherMainInfo />}
+      {
+        weather === 'loading'
+          ? <LoadingScreen />
+          : weather && weather !== 'loading'
+            ? <WeatherMainInfo
+                city={weather.location.name}
+                country={weather.location.country}
+                lat={weather.location.lat}
+                lon={weather.location.lon}
+                icon={weather.current.condition.icon}
+                weather={weather.current.condition.text}
+                temp={weather.current.temp_c}
+              />
+            : <div className='result' />
+      }
     </>
   )
 }
-//  src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15057.534307180755!2d${weather.location.lon}5!3d${weather.location.lat}5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smx!4v1651103744472!5m2!1sen!2smx`}
